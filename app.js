@@ -3,6 +3,7 @@ const express = require("express")
 const { Sequelize } = require("sequelize")
 const app = express()
 app.use(express.json())
+const logger = require("./logger")
 
 const sequelize = new Sequelize(process.env.DATABASE_URL)
 
@@ -21,13 +22,13 @@ app.get("/todos", async function (req, res) {
   try {
     todos = (await sequelize.query("SELECT * FROM todos"))[0]
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
   res.send(todos)
 })
 
 app.post("/todos", async function (req, res) {
-  console.log(`Données entrées : ${JSON.stringify(req.body)}`)
+  logger.log(`Données entrées : ${JSON.stringify(req.body)}`)
 
   try {
     const todos = await sequelize.query(
@@ -42,7 +43,7 @@ app.post("/todos", async function (req, res) {
       { delay: new Date(req.body.date_echeance).getTime() - Date.now() }
     )
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(400).send("bad request")
     return
   }
@@ -51,5 +52,5 @@ app.post("/todos", async function (req, res) {
 
 const port = process.env.PORT
 app.listen(port, function () {
-  console.log(`ToDo API listening on port ${port}`)
+  logger.log(`ToDo API listening on port ${port}`)
 })

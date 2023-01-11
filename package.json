@@ -5,8 +5,10 @@
   "scripts": {
     "start": "node app.js",
     "start:watch": "nodemon app.js",
+    "start:worker": "node worker.js",
     "migrate": "sequelize db:migrate",
-    "migrate:undo": "sequelize db:migrate:undo"
+    "migrate:undo": "sequelize db:migrate:undo",
+    "task:clean-todos": "node clean-todos.js"
   },
   "author": "OCTO",
   "license": "ISC",
