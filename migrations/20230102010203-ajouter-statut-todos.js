@@ -7,6 +7,12 @@ module.exports = {
       defaultValue: "EN_COURS",
       allowNull: false
     })
+    await queryInterface.sequelize.query(
+      `UPDATE todos SET statut = 'EN_RETARD' WHERE date_echeance < now()`,
+      {
+        replacements: [job.data.idTodo]
+      }
+    )
   },
 
   async down(queryInterface, Sequelize) {
